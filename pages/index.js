@@ -6,8 +6,18 @@ export default function Home() {
   const [editId, setEditId] = useState(null);
 
   useEffect(() => {
-    fetchProducts();
+    initDatabase();
   }, []);
+
+  const initDatabase = async () => {
+    try {
+      await fetch('/api/init-db', { method: 'POST' });
+      fetchProducts();
+    } catch (error) {
+      console.error('Init error:', error);
+      fetchProducts();
+    }
+  };
 
   const fetchProducts = async () => {
     try {

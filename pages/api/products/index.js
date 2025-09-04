@@ -11,7 +11,8 @@ export default async function handler(req, res) {
         );
         res.status(200).json(rows);
       } catch (error) {
-        res.status(500).json({ error: 'Database error' });
+        console.error('Database error:', error);
+        res.status(500).json({ error: error.message });
       }
       break;
 
@@ -24,7 +25,8 @@ export default async function handler(req, res) {
         );
         res.status(201).json({ id: result.insertId, message: 'Product created' });
       } catch (error) {
-        res.status(500).json({ error: 'Database error' });
+        console.error('Database error:', error);
+        res.status(500).json({ error: error.message });
       }
       break;
 
