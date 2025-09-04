@@ -70,6 +70,21 @@ export default function Home() {
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial' }}>
       <h1>Product Management CMS</h1>
+      <div style={{ marginBottom: '20px' }}>
+        <a 
+          href="/publishedproducts" 
+          style={{ 
+            padding: '10px 20px', 
+            backgroundColor: '#4caf50', 
+            color: 'white', 
+            textDecoration: 'none',
+            borderRadius: '4px',
+            display: 'inline-block'
+          }}
+        >
+          View Published Products
+        </a>
+      </div>
       
       <form onSubmit={handleSubmit} style={{ marginBottom: '30px', padding: '20px', border: '1px solid #ccc' }}>
         <h3>{editId ? 'Edit Product' : 'Add New Product'}</h3>
