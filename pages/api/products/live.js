@@ -10,8 +10,10 @@ export default async function handler(req, res) {
     const [rows] = await pool.execute(
       'SELECT product_id, product_name, product_desc FROM Products WHERE status = "Published" AND is_deleted = FALSE'
     );
+    console.log('Published products query result:', rows);
     res.status(200).json(rows);
   } catch (error) {
-    res.status(500).json({ error: 'Database error' });
+    console.error('Published products error:', error);
+    res.status(500).json({ error: error.message });
   }
 }

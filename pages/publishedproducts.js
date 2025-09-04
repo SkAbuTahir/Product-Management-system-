@@ -11,8 +11,10 @@ export default function PublishedProducts() {
     try {
       const res = await fetch('/api/products/live');
       const data = await res.json();
+      console.log('Published products response:', data);
       setProducts(Array.isArray(data) ? data : []);
     } catch (error) {
+      console.error('Error fetching published products:', error);
       setProducts([]);
     }
   };
