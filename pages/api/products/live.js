@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
   try {
     const [rows] = await pool.execute(
-      'SELECT product_id, product_name, product_desc FROM Products WHERE status = "Published" AND is_deleted = FALSE'
+      "SELECT product_id, product_name, product_desc FROM Products WHERE status = 'Published' AND is_deleted = FALSE"
     );
     console.log('Published products query result:', rows);
     res.status(200).json(rows);
