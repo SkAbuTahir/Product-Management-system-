@@ -8,9 +8,13 @@ export default function Live() {
   }, []);
 
   const fetchLiveProducts = async () => {
-    const res = await fetch('/api/products/live');
-    const data = await res.json();
-    setProducts(data);
+    try {
+      const res = await fetch('/api/products/live');
+      const data = await res.json();
+      setProducts(Array.isArray(data) ? data : []);
+    } catch (error) {
+      setProducts([]);
+    }
   };
 
   return (

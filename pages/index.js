@@ -10,9 +10,13 @@ export default function Home() {
   }, []);
 
   const fetchProducts = async () => {
-    const res = await fetch('/api/products');
-    const data = await res.json();
-    setProducts(data);
+    try {
+      const res = await fetch('/api/products');
+      const data = await res.json();
+      setProducts(Array.isArray(data) ? data : []);
+    } catch (error) {
+      setProducts([]);
+    }
   };
 
   const handleSubmit = async (e) => {
