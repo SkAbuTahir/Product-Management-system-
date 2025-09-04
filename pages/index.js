@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 export default function Home() {
   const [products, setProducts] = useState([]);
-  const [form, setForm] = useState({ product_name: '', product_desc: '', status: 'Draft' });
+  const [form, setForm] = useState({ product_name: '', product_desc: '', status: 'Draft', created_by: '' });
   const [editId, setEditId] = useState(null);
 
   useEffect(() => {
@@ -34,8 +34,8 @@ export default function Home() {
     const method = editId ? 'PUT' : 'POST';
     const url = editId ? `/api/products/${editId}` : '/api/products';
     const body = editId 
-      ? { ...form, updated_by: 'admin' }
-      : { ...form, created_by: 'admin' };
+      ? { ...form, updated_by: form.created_by }
+      : { ...form };
 
     await fetch(url, {
       method,
@@ -43,7 +43,7 @@ export default function Home() {
       body: JSON.stringify(body)
     });
 
-    setForm({ product_name: '', product_desc: '', status: 'Draft' });
+    setForm({ product_name: '', product_desc: '', status: 'Draft', created_by: '' });
     setEditId(null);
     fetchProducts();
   };
@@ -52,7 +52,8 @@ export default function Home() {
     setForm({
       product_name: product.product_name,
       product_desc: product.product_desc,
-      status: product.status
+      status: product.status,
+      created_by: product.created_by
     });
     setEditId(product.product_id);
   };
@@ -61,7 +62,7 @@ export default function Home() {
     await fetch(`/api/products/${id}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ updated_by: 'admin' })
+      body: JSON.stringify({ updated_by: form.created_by || 'admin' })
     });
     fetchProducts();
   };
@@ -91,6 +92,16 @@ export default function Home() {
           />
         </div>
         <div style={{ marginBottom: '10px' }}>
+          <input
+            type="text"
+            placeholder="Created By"
+            value={form.created_by}
+            onChange={(e) => setForm({ ...form, created_by: e.target.value })}
+            required
+            style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
+          />
+        </div>
+        <div style={{ marginBottom: '10px' }}>
           <select
             value={form.status}
             onChange={(e) => setForm({ ...form, status: e.target.value })}
@@ -107,7 +118,7 @@ export default function Home() {
         {editId && (
           <button 
             type="button" 
-            onClick={() => { setEditId(null); setForm({ product_name: '', product_desc: '', status: 'Draft' }); }}
+            onClick={() => { setEditId(null); setForm({ product_name: '', product_desc: '', status: 'Draft', created_by: '' }); }}
             style={{ padding: '10px 20px', marginLeft: '10px', backgroundColor: '#666', color: 'white', border: 'none' }}
           >
             Cancel
